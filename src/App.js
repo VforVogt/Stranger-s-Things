@@ -7,6 +7,15 @@ import {
 import { API_URL } from "./config";
 import { getTokenFromLocalStorage } from "./util";
 
+import {
+  Nav,
+  Posts,
+  CreatePost,
+  LoginOrRegister,
+  Me,
+  CreateMessage,
+} from "./components";
+
 export default function App() {
   const { isLoggedIn, setIsLoggedIn } = useState(false);
   const { token, setToken } = useState(null);
@@ -111,7 +120,31 @@ export default function App() {
             />
           </Switch>
         )}
-        {isLoggedIn && <Switch></Switch>}
+        {isLoggedIn && (
+          <Switch>
+            <Route
+              exact
+              path={"/posts/new"}
+              render={() => (
+                <CreatePost
+                  posts={posts}
+                  setPosts={setPosts}
+                  updateMe={updateMe}
+                />
+              )}
+            />
+            <Route
+              exact
+              path={"/posts/:postId/messages/new"}
+              render={() => <CreateMessage token={token} />}
+            />
+            <Route
+              exact
+              path={"/users/me"}
+              render={() => <Me me={me} updateMe={updateMe} token={token} />}
+            />
+          </Switch>
+        )}
       </main>
     </Router>
   );
